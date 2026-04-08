@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<h2>Your Cart</h2>
+{% if cart_items %}
+    <div class="cart-items">
+        {% for cart_item in cart_items %}
+            <div class="cart-item">
+                <h4>{{ cart_item.item.name }}</h4>
+                <p>Quantity: {{ cart_item.quantity }}</p>
+                <p>Subtotal: ${{ cart_item.subtotal }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <p>Total: ${{ total }}</p>
+    <form method="POST" action="{{ url_for('place_order') }}">
+        <label for="delivery_address">Delivery Address:</label>
+        <textarea id="delivery_address" name="delivery_address" required></textarea><br>
+        <button type="submit">Place Order</button>
+    </form>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

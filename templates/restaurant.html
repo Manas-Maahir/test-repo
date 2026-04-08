@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ restaurant.name }} Menu{% endblock %}
+
+{% block content %}
+<h2>{{ restaurant.name }}</h2>
+<p>{{ restaurant.address }}</p>
+<h3>Menu</h3>
+<div class="menu">
+    {% for item in menu_items %}
+        <div class="menu-item">
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.description }}</p>
+            <p>Price: ${{ item.price }}</p>
+            <form method="POST" action="{{ url_for('add_to_cart', item_id=item.id) }}">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% if current_user.role == 'restaurant_owner' and restaurant.owner_id == current_user.id %}
+    <a href="{{ url_for('add_menu_item', restaurant_id=restaurant.id) }}">Add Menu Item</a>
+{% endif %}
+{% endblock %}
